@@ -1,0 +1,13 @@
+<h2>My Bookmarks</h2>
+<ul>
+{% for b in bookmarks %}
+  <li>
+    <strong>{{ b.name }}</strong><br>
+    Price: {{ b.price }}<br>
+    Rating: {{ b.rating }}<br>
+    Source: {{ b.source }}<br>
+    <a href="{{ b.url }}" target="_blank">View Hotel</a>
+  </li>
+{% endfor %}
+</ul>
+<a href="{% url 'search' %}">Back to Search</a>

@@ -1,0 +1,22 @@
+<h2>Search Results</h2>
+<ul>
+{% for hotel in hotels %}
+  <li>
+    <strong>{{ hotel.name }}</strong><br>
+    Price: {{ hotel.price }}<br>
+    Rating: {{ hotel.rating }}<br>
+    Source: {{ hotel.source }}<br>
+    <a href="{{ hotel.url }}" target="_blank">View Hotel</a>
+    <form method="post" action="{% url 'add_bookmark' %}">
+      {% csrf_token %}
+      <input type="hidden" name="name" value="{{ hotel.name }}">
+      <input type="hidden" name="price" value="{{ hotel.price }}">
+      <input type="hidden" name="rating" value="{{ hotel.rating }}">
+      <input type="hidden" name="source" value="{{ hotel.source }}">
+      <input type="hidden" name="url" value="{{ hotel.url }}">
+      <button type="submit">Bookmark</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+<a href="{% url 'search' %}">Search Again</a>
