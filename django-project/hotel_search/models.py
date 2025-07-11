@@ -23,3 +23,15 @@ class Bookmark(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.user.username}"
+    
+
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    email = models.EmailField(unique=True)
+
+    class Meta:
+        db_table = 'users'  # This ensures the table is named 'users'
+
+    def __str__(self):
+        return self.username
