@@ -1,6 +1,50 @@
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Search</button>
-</form>
-<a href="{% url 'bookmarks' %}">My Bookmarks</a>
+{% extends "base.html" %}
+{% block title %}Hotel Search{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-lg">
+        <div class="card-body p-5">
+          <h2 class="mb-4 text-center">Find Your Perfect Hotel</h2>
+          <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_city" class="form-label">City</label>
+              {{ form.city }}
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="min_price" class="form-label">Min Price</label>
+                <input type="number" name="min_price" class="form-control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="max_price" class="form-label">Max Price</label>
+                <input type="number" name="max_price" class="form-control">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="stars" class="form-label">Star Rating</label>
+              <select name="stars" class="form-select">
+                <option value="">Any</option>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Search Hotels</button>
+          </form>
+          <hr>
+          <div class="text-center">
+            <a href="{% url 'bookmarks' %}" class="btn btn-link">View Bookmarks</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
