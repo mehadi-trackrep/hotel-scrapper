@@ -5,12 +5,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Bookmark
+from loguru import logger as LOGGER
+from django.conf import settings
 from .forms import SearchForm, RegisterForm, LoginForm
 from django.contrib.auth.views import LoginView
 from .mock_data import MockDataGenerator
 
 # Base URL for FastAPI service
-FASTAPI_URL = os.getenv("FASTAPI_URL", "http://fastapi:8001")
+FASTAPI_URL = getattr(settings, "FASTAPI_URL", "http://127.0.0.1:8001")
 
 @login_required
 def search_view(request):
@@ -20,19 +22,24 @@ def search_view(request):
         if form.is_valid():
             city = form.cleaned_data['city']
             
-            hotels = MockDataGenerator.get_hotel_search_results()
+            LOGGER.debug(f"\ncity: {city}\n")
             
-            ## Use FastAPI keeping the Scrapy
-            # try:
-            #     response = requests.post(
-            #         f"{FASTAPI_URL}/api/search_hotels",
-            #         json={"city": city},
-            #         timeout=60
-            #     )
-            #     hotels = response.json()
-            # except Exception as e:
-            #     hotels = []
-            #     print(f"FastAPI error: {e}")
+            # hotels = MockDataGenerator.get_hotel_search_results()
+            
+            # Use FastAPI keeping the Scrapy
+            try:
+                response = requests.post(
+                    f"{FASTAPI_URL}/api/search_hotels",
+                    json={"city": city},
+                    timeout=60
+                )
+                hotels = response.json().get("results", [])
+                LOGGER.debug(f"\nfastapi response: {hotels}\n")
+
+            except Exception as e:
+                hotels = []
+                print(f"FastAPI error: {e}")
+
             return render(request, 'hotels/results.html', {"hotels": hotels})
     else:
         form = SearchForm()

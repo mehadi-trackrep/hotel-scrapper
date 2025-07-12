@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 LOGIN_REDIRECT_URL = '/search/'
 LOGOUT_REDIRECT_URL = '/login/'
+FASTAPI_URL = 'http://127.0.0.1:8001'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
